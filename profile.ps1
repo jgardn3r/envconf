@@ -1,3 +1,6 @@
+using namespace System.Management.Automation
+using namespace System.Management.Automation.Language
+
 # helper functions
 function Set-CustomAlias($Name, [scriptblock]$Script) {
     $FunctionName = "Invoke-$Name"
@@ -51,3 +54,5 @@ Set-CustomAlias gcm {
     param([Parameter(ValueFromRemainingArguments)][string]$Message)
     git commit -m $Message
 }
+
+. $PSScriptRoot/SmartQuotesAndBrackets.ps1

@@ -55,4 +55,37 @@ Set-CustomAlias gcm {
     git commit -m $Message
 }
 
+# custom shortcuts
+Set-PSReadLineKeyHandler -Chord 'Ctrl+g,Ctrl+b' -ScriptBlock {
+    $CurrentLine = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref] $CurrentLine, [ref] $null)
+    $Branch = ((git branch -a --color=always) -replace '^..', '') -notmatch 'HEAD' |
+        Invoke-Fzf -Ansi -Prompt $CurrentLine -PreviewWindow 'right:70%' -Preview 'git log -n100'
+    [Microsoft.PowerShell.PSConsoleReadLine]::InvokePrompt()
+    [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$Branch")
+}
+Set-PSReadLineKeyHandler -Chord 'Ctrl+g,Ctrl+l' -ScriptBlock {
+    $CurrentLine = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref] $CurrentLine, [ref] $null)
+    $Separator = "|||"
+    $LogLine = git log --color=always --date=relative -n 100 `
+        --pretty=format:"%C(yellow)%h$Separator%Cred%cd$Separator%C(cyan)%aN$Separator%Creset%s" |
+        column --table --separator $Separator --output-separator " " |
+        Invoke-Fzf -Ansi -Prompt $CurrentLine -ReverseInput -NoSort `
+        -Preview 'powershell -NoProfile -NonInteractive -Command git show --stat --color=always $Args[0] {}'
+        # 'git show --stat --color=always ({} | head -n1)'
+    $SHA = $LogLine -replace '([a-f0-9]{7,}).*', '$1'
+    [Microsoft.PowerShell.PSConsoleReadLine]::InvokePrompt()
+    [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$SHA")
+}
+Set-PSReadLineKeyHandler -Chord 'Alt+g' -ScriptBlock {
+    $Branch = ((git branch -a --color=never) -replace '^..', '') -notmatch 'HEAD' |
+        Invoke-Fzf -Prompt 'git checkout '
+    [Microsoft.PowerShell.PSConsoleReadLine]::InvokePrompt()
+    if ($Branch) {
+        [Microsoft.PowerShell.PSConsoleReadLine]::Insert("git checkout $Branch")
+        [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
+    }
+}
+
 . $PSScriptRoot/SmartQuotesAndBrackets.ps1

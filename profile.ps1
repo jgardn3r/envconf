@@ -89,3 +89,4 @@ Set-PSReadLineKeyHandler -Chord 'Alt+g' -ScriptBlock {
 }
 
 . $PSScriptRoot/SmartQuotesAndBrackets.ps1
+. $PSScriptRoot/TabCompleteForwardSlashes.ps1

@@ -40,3 +40,4 @@ nnoremap <silent> x "_x
 xnoremap <silent> x "_x
 nnoremap <silent> X "_X
 xnoremap <silent> X "_X
+vnoremap <silent> p P

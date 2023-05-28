@@ -86,3 +86,8 @@ __git_complete gbc _git_bundle_create
 __git_complete gb _git_branch
 __git_complete gf _git_fetch
 __git_complete g _git
+
+# FZF
+source $SCRIPT_DIR/completion.bash
+source $SCRIPT_DIR/key-bindings-custom.bash
+source $SCRIPT_DIR/fzf-custom.bash

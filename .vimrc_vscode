@@ -1,8 +1,6 @@
 nnoremap m <c-v>
 inoremap jk <ESC>
 
-nnoremap ; :
-
 set number
 highlight LineNr ctermfg=grey
 highlight Visual ctermfg=White ctermbg=LightBlue

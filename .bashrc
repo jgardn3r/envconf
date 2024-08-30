@@ -1,3 +1,5 @@
+#!/bin/bash
+
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
 
 git_branch() {
@@ -22,9 +24,6 @@ function get_ps1() {
   echo "$CUSTOM_PS1"
 }
 
-
-# export PS1=`get_ps1`
-
 export PS1='\[\033]0;$PWD `git_branch`\007\]\[\r\033[32m\]\u@\h:\[\033[33m\]\w\[\033[36m\]`git_branch`\[\033[0m\]$ '
 TIMEFORMAT='real: %lR | user: %lU | sys: %lS'
 
@@ -33,7 +32,7 @@ bind "set show-all-if-ambiguous on"
 bind "set completion-ignore-case on"
 bind "set menu-complete-display-prefix on"
 
-EDITOR=vi
+export EDITOR=vim
 
 function gcam() {
   eval "git commit -am '$*'"

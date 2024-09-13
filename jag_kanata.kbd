@@ -1,10 +1,5 @@
-(defvirtualkeys v-cap caps)
 (defalias cap
-  (multi
-    (on-press tap-vkey v-cap)
-    (on-release tap-vkey v-cap)
-    (layer-toggle symb)
-  )
+  (layer-toggle symb)
 )
 (defalias eq
   (macro S-; =)

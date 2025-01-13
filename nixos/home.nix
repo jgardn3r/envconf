@@ -6,9 +6,7 @@
   home-manager = builtins.fetchTarball {
     url = "https://github.com/nix-community/home-manager/archive/release-24.11.tar.gz";
   };
-  envconf = builtins.fetchGit {
-    url = "https://github.com/jgardn3r/envconf";
-  };
+  envconf = builtins.toString ./..;
 in {
   imports = [
     (import "${home-manager}/nixos")
@@ -18,6 +16,11 @@ in {
     # This should be the same value as `system.stateVersion` in
     # your `configuration.nix` file.
     home.stateVersion = "24.11";
+
+    home.file."envconf" = {
+      source = envconf;
+      recursive = true;
+    };
 
     programs.bash = {
       enable = true;
@@ -61,8 +64,6 @@ in {
 
   services.kanata = {
     enable = true;
-    keyboards.main = {
-      configFile = "${envconf}/jag_kanata.kbd";
-    };
+    keyboards.main.configFile = /home/jgardner/envconf/jag_kanata.kbd;
   };
 }

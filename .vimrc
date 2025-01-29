@@ -17,6 +17,8 @@ let &t_SR = "\e[4 q"
 let &t_EI = "\e[3 q"
 
 set vb t_vb=
+set ignorecase
+set smartcase
 
 au FileType gitcommit setlocal tw=71
 

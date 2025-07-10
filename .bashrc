@@ -2,29 +2,17 @@
 
 SCRIPT_DIR="$( cd "$( dirname "$( realpath "${BASH_SOURCE[0]}" )" )" && pwd -P )"
 
-git_branch() {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+source "$SCRIPT_DIR/git-prompt.sh"
+
+function getPS1Command {
+  state=$(__fastgit_ps1)
+  [ "$state" ] && state=" $state"
+
+  export PS1="\[\033]0;\W\a\]\[\e[32m\]\u@\H:\[\e[33m\]\w\[\e[0m\]\[\033[36m\]${state}\[\033[0m\]\$ "
 }
 
-workingDirectory() {
-  repo_name=$(basename "$(git rev-parse --show-toplevel 2> /dev/null)")
-  [ -z $repo_name ] && repo_name='\w' || repo_name="($repo_name)"
-  echo "${repo_name@P}"
-}
+export PROMPT_COMMAND='getPS1Command'
 
-function get_ps1() {
-  local CUSTOM_PS1='\[\033]0;$PWD `git_branch`\007\]\[\r\033'
-  CUSTOM_PS1+='[32m\]\u@\h '
-  CUSTOM_PS1+='\[\033[33m\]'
-  CUSTOM_PS1+='$(workingDirectory)'
-  CUSTOM_PS1+='\[\033[36m\]'
-  CUSTOM_PS1+='$(git_branch)'
-  CUSTOM_PS1+='\[\033[0m\]$ '
-
-  echo "$CUSTOM_PS1"
-}
-
-export PS1='\[\033]0;$PWD `git_branch`\007\]\[\r\033[32m\]\u@\h:\[\033[33m\]\w\[\033[36m\]`git_branch`\[\033[0m\]$ '
 TIMEFORMAT='real: %lR | user: %lU | sys: %lS'
 
 bind '"\t":menu-complete'

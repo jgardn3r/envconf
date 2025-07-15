@@ -78,8 +78,6 @@ function __git_state() {
 			fi
 		elif [ -f "$g/MERGE_HEAD" ]; then
 			r="|MERGING"
-		elif __git_sequencer_status; then
-			:
 		elif [ -f "$g/BISECT_LOG" ]; then
 			r="|BISECTING"
 		fi
